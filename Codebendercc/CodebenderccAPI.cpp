@@ -87,13 +87,16 @@ void CodebenderccAPI::closePort(bool flushFlag) try {
 	CodebenderccAPI::debugMessage("CodebenderccAPI::closePort",3);		
 	try{
 		if(serialPort.isOpen())
+
 			serialPort.close();
 			if(!flushFlag)
 				RemovePortFromList(usedPort);
-	}catch(...){
-	CodebenderccAPI::debugMessage("CodebenderccAPI::closePort exception",2);
-	if(!flushFlag)
-		RemovePortFromList(usedPort);
+	}catch(serial::IOException& IOe){
+		CodebenderccAPI::debugMessage(IOe.what(),2);
+		error_notify(IOe.what());
+			if(!flushFlag)
+				RemovePortFromList(usedPort);
+		return;
 	}
 	CodebenderccAPI::debugMessage("CodebenderccAPI::closePort ended",3);
 } catch (...) {
