@@ -134,8 +134,10 @@ void Codebendercc::onPluginReady()
         signal(SIGUSR1, SIG_IGN);
     if (signal (SIGUSR2, sig_log) == SIG_IGN)
         signal(SIGUSR2, SIG_IGN);
+#ifndef __APPLE__
     if (signal (SIGPOLL, sig_log) == SIG_IGN)
         signal(SIGPOLL, SIG_IGN);
+#endif
     if (signal (SIGPROF, sig_log) == SIG_IGN)
         signal(SIGPROF, SIG_IGN);
     if (signal (SIGSYS, sig_log) == SIG_IGN)
