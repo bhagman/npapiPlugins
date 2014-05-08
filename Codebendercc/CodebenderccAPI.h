@@ -135,6 +135,7 @@ public:
 		registerMethod("enableDebug", make_method(this, &CodebenderccAPI::enableDebug));
 		registerMethod("disableDebug", make_method(this, &CodebenderccAPI::disableDebug));
 		registerMethod("getFlashResult", make_method(this, &CodebenderccAPI::getFlashResult));
+        registerMethod("readSignalFile", make_method(this, &CodebenderccAPI::readSignalFile));
 
         //Register all JS read-only properties
         registerProperty("version", make_property(this, &CodebenderccAPI::get_version));
@@ -211,10 +212,10 @@ public:
 
     /**
      * Returns a reference to the Plugin Object.
-     *   Gets a reference to the plugin that was passed in when the object
-     *   was created.  If the plugin has already been released then this
-     *   will throw a FB::script_error that will be translated into a
-     *  javascript exception in the page.
+     * Gets a reference to the plugin that was passed in when the object
+     * was created.  If the plugin has already been released then this
+     * will throw a FB::script_error that will be translated into a
+     * javascript exception in the page.
      * @return a reference to the plugin.
      */
     CodebenderccPtr getPlugin();
@@ -421,6 +422,8 @@ public:
 	 **/
 	
 	void getThreadId(const char * pidMessage,const char * threadMessage); 
+
+    void readSignalFile();
 	
 	/**
 	 * Debugging variables.

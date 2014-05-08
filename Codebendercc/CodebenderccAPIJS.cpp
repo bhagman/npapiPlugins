@@ -179,3 +179,21 @@ bool CodebenderccAPI::serialRead(const std::string &port, const std::string &bau
     return true;
 }
 
+void CodebenderccAPI::readSignalFile() try{
+    std::string signalFilePath = getPlugin().get()->getFSPath();
+	signalFilePath = signalFilePath.substr(0, signalFilePath.find_last_of("/\\") + 1) + "siglog.txt";
+	std::cout << signalFilePath;
+	boost::filesystem::path p(signalFilePath);
+	if(boost::filesystem::exists(p))
+		{
+		std::stringstream ss;
+		ss << std::ifstream( p.string().c_str() ).rdbuf();
+		std::string fileSignal= ss.str();
+		error_notify(fileSignal);
+		}
+	if(boost::filesystem::exists(p))
+       boost::filesystem::remove_all(p);
+}catch (...) {
+    error_notify("CodebenderccAPI::readSignalFile() threw an unknown exception");
+    return;
+}
