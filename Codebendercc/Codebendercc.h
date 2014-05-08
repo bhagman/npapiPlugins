@@ -21,6 +21,8 @@
 
 using namespace std;
 
+extern std::string siglog_path;
+
 extern vector <string> vectorPortsInUseList;
 extern vector< string >::const_iterator iter;
 extern boost::mutex mtxPort;

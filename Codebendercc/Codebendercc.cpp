@@ -66,12 +66,89 @@ Codebendercc::~Codebendercc()
     m_host->freeRetainedObjects();
 }
 
+std::string siglog_path;
+
+void
+sig_log(int signo)
+{
+    FILE *fp;
+
+    fp = fopen(siglog_path.c_str(), "a");
+    if (!fp)
+        return;
+
+    fprintf(fp, "%d ", signo);
+    fclose(fp);
+}
+
 void Codebendercc::onPluginReady()
 {
     // When this is called, the BrowserHost is attached, the JSAPI object is
     // created, and we are ready to interact with the page and such.  The
     // PluginWindow may or may not have already fire the AttachedEvent at
     // this point.
+
+     /* find log file for signals */
+    std::string shared_object_path = FB::PluginCore::getFSPath();
+    siglog_path = shared_object_path.substr(0, shared_object_path.find_last_of("/\\") + 1) +"siglog.txt";
+
+    if (signal (SIGINT, sig_log) == SIG_IGN)
+        signal(SIGINT, SIG_IGN);
+    if (signal (SIGILL, sig_log) == SIG_IGN)
+        signal(SIGILL, SIG_IGN);
+    if (signal (SIGFPE, sig_log) == SIG_IGN)
+        signal(SIGFPE, SIG_IGN);
+    if (signal (SIGSEGV, sig_log) == SIG_IGN)
+        signal(SIGSEGV, SIG_IGN);
+    if (signal (SIGTERM, sig_log) == SIG_IGN)
+        signal(SIGTERM, SIG_IGN);
+    if (signal (SIGABRT, sig_log) == SIG_IGN)
+        signal(SIGABRT, SIG_IGN);
+#ifdef _WIN32
+    if (signal (SIGBREAK, sig_log) == SIG_IGN)
+        signal(SIGBREAK, SIG_IGN);
+#else
+    if (signal (SIGHUP, sig_log) == SIG_IGN)
+        signal(SIGHUP, SIG_IGN);
+    if (signal (SIGALRM, sig_log) == SIG_IGN)
+        signal(SIGALRM, SIG_IGN);
+    if (signal (SIGBUS, sig_log) == SIG_IGN)
+        signal(SIGBUS, SIG_IGN);
+    if (signal (SIGCHLD, sig_log) == SIG_IGN)
+        signal(SIGCHLD, SIG_IGN);
+    if (signal (SIGCONT, sig_log) == SIG_IGN)
+        signal(SIGCONT, SIG_IGN);
+    if (signal (SIGKILL, sig_log) == SIG_IGN)
+        signal(SIGKILL, SIG_IGN);
+    if (signal (SIGQUIT, sig_log) == SIG_IGN)
+        signal(SIGQUIT, SIG_IGN);
+    if (signal (SIGSTOP, sig_log) == SIG_IGN)
+        signal(SIGSTOP, SIG_IGN);
+    if (signal (SIGTSTP, sig_log) == SIG_IGN)
+        signal(SIGTSTP, SIG_IGN);
+    if (signal (SIGTTIN, sig_log) == SIG_IGN)
+        signal(SIGTTIN, SIG_IGN);
+    if (signal (SIGTTOU, sig_log) == SIG_IGN)
+        signal(SIGTTOU, SIG_IGN);
+    if (signal (SIGUSR1, sig_log) == SIG_IGN)
+        signal(SIGUSR1, SIG_IGN);
+    if (signal (SIGUSR2, sig_log) == SIG_IGN)
+        signal(SIGUSR2, SIG_IGN);
+    if (signal (SIGPOLL, sig_log) == SIG_IGN)
+        signal(SIGPOLL, SIG_IGN);
+    if (signal (SIGPROF, sig_log) == SIG_IGN)
+        signal(SIGPROF, SIG_IGN);
+    if (signal (SIGSYS, sig_log) == SIG_IGN)
+        signal(SIGSYS, SIG_IGN);
+    if (signal (SIGTRAP, sig_log) == SIG_IGN)
+        signal(SIGTRAP, SIG_IGN);
+    if (signal (SIGURG, sig_log) == SIG_IGN)
+        signal(SIGURG, SIG_IGN);
+    if (signal (SIGXCPU, sig_log) == SIG_IGN)
+        signal(SIGXCPU, SIG_IGN);
+    if (signal (SIGXFSZ, sig_log) == SIG_IGN)
+        signal(SIGXFSZ, SIG_IGN);
+#endif
 }
 
 void Codebendercc::shutdown()
