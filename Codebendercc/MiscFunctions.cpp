@@ -187,25 +187,35 @@ FB::variant CodebenderccAPI::getLastCommand() {
 
 FB::variant CodebenderccAPI::getFlashResult() try {
 	CodebenderccAPI::debugMessage("CodebenderccAPI::getFlashResult",3);
-	FILE *pFile;
-	#ifdef _WIN32
-		std::string filename = FB::wstring_to_utf8(outfile);
-		pFile = CodebenderccAPI::fopen(filename.c_str(), "r");
-	#else
-		pFile = CodebenderccAPI::fopen(outfile.c_str(), "r");
-	#endif
+    FILE *pFile;
+    #ifdef _WIN32
+        std::string filename = FB::wstring_to_utf8(outfile);
+        boost::filesystem::path outfile_path(filename);
+        if(boost::filesystem::exists(outfile_path))
+        	pFile = CodebenderccAPI::fopen(filename.c_str(), "r");
+        else{
+            error_notify("CodebenderccAPI::getFlashResult() outfile does not exists.");
+            return "";  
+            }
+    #else
+        boost::filesystem::path outfile_path(outfile);
+        if(boost::filesystem::exists(outfile_path))
+        	pFile = CodebenderccAPI::fopen(outfile.c_str(), "r");
+        else{
+            error_notify("CodebenderccAPI::getFlashResult() outfile does not exists.");
+            return "";  
+            }
+    #endif
     char buffer[128];
     std::string result = "";
-
     if (pFile == NULL)
         return result;
-
     while (!feof(pFile)) {
-        if (CodebenderccAPI::fgets(buffer, 128, pFile) != NULL)
-            result += buffer;
+    if (CodebenderccAPI::fgets(buffer, 128, pFile) != NULL)
+        result += buffer;
     }
     CodebenderccAPI::fclose(pFile);
-	CodebenderccAPI::debugMessage("CodebenderccAPI::getFlashResult ended",3);
+    CodebenderccAPI::debugMessage("CodebenderccAPI::getFlashResult ended",3);
     return result;
 }catch (...) {
     error_notify("CodebenderccAPI::getFlashResult() threw an unknown exception");
