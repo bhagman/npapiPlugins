@@ -194,7 +194,6 @@ FB::variant CodebenderccAPI::getFlashResult() try {
         if(boost::filesystem::exists(outfile_path))
         	pFile = CodebenderccAPI::fopen(filename.c_str(), "r");
         else{
-            error_notify("CodebenderccAPI::getFlashResult() outfile does not exists.");
             return "";  
             }
     #else
@@ -202,7 +201,6 @@ FB::variant CodebenderccAPI::getFlashResult() try {
         if(boost::filesystem::exists(outfile_path))
         	pFile = CodebenderccAPI::fopen(outfile.c_str(), "r");
         else{
-            error_notify("CodebenderccAPI::getFlashResult() outfile does not exists.");
             return "";  
             }
     #endif
