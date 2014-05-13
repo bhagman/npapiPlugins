@@ -149,15 +149,12 @@ void CodebenderccAPI::serialWrite(const std::string & message) try {
     error_notify("CodebenderccAPI::serialWrite() threw an unknown exception");
 }
 
+
 FB::variant CodebenderccAPI::disconnect() try {
 	CodebenderccAPI::debugMessage("CodebenderccAPI::disconnect",3);
 	if(!(serialPort.isOpen()))
 		return 1;
-	try{
-			CodebenderccAPI::closePort(false);
-		}catch(...){
-		CodebenderccAPI::debugMessage("CodebenderccAPI::disconnect close port exception",2);
-		}
+	CodebenderccAPI::closePort(false);
 	CodebenderccAPI::debugMessage("CodebenderccAPI::disconnect ended",3);
 	return 1;	
 } catch (...) {
