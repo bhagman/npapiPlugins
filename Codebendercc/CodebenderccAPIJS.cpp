@@ -162,6 +162,9 @@ void CodebenderccAPI::serialWrite(const std::string & message) try {
 	CodebenderccAPI::debugMessage("CodebenderccAPI::serialWrite ended",3);
 	} catch (...) {
     error_notify("CodebenderccAPI::serialWrite() threw an unknown exception");
+    if (!closedPort)
+		notify("disconnect");
+	return;
 	}
 
 
