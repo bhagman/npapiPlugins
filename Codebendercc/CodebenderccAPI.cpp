@@ -914,13 +914,28 @@ void CodebenderccAPI::serialReader(const std::string &port, const unsigned int &
 						callback->InvokeAsync("", FB::variant_list_of(shared_from_this())(d));
 					}
 			}
-		}	
-    catch (...) {
-	CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
-		closePort(false);
-		/*Port is already closed from closePort() and notify("disconnect") closes the port for second time*/
-        notify("disconnect");
-    }
+		}
+	}catch(serial::PortNotOpenedException& pno){
+			CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
+			CodebenderccAPI::debugMessage(pno.what(),2);
+			error_notify(pno.what());
+			notify("disconnect");
+			return;
+			}
+		catch(serial::SerialException& se){
+			CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
+			CodebenderccAPI::debugMessage(se.what(),2);
+			error_notify(se.what());
+			notify("disconnect");
+			return;
+			}			
+		catch(serial::IOException& IOe){
+			CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
+			CodebenderccAPI::debugMessage(IOe.what(),2);
+			error_notify(IOe.what());
+			notify("disconnect");
+			return;
+			}
 	CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader ended",3);
 } catch (...) {
     error_notify("CodebenderccAPI::serialReader() threw an unknown exception");
