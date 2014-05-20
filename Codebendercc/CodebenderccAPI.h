@@ -434,6 +434,8 @@ public:
 	int currentLevel;
 	std::string usedPort;
 
+    /** closedPort variable used in disconnect() control **/
+    bool closedPort;   
 
 private:
 

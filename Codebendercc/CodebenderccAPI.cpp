@@ -919,27 +919,31 @@ void CodebenderccAPI::serialReader(const std::string &port, const unsigned int &
 			CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
 			CodebenderccAPI::debugMessage(pno.what(),2);
 			error_notify(pno.what());
-			notify("disconnect");
+			if (!closedPort)
+				notify("disconnect");
 			return;
 			}
 		catch(serial::SerialException& se){
 			CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
 			CodebenderccAPI::debugMessage(se.what(),2);
 			error_notify(se.what());
-			notify("disconnect");
+			if (!closedPort)
+				notify("disconnect");
 			return;
 			}			
 		catch(serial::IOException& IOe){
 			CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader loop interrupted",1);
 			CodebenderccAPI::debugMessage(IOe.what(),2);
 			error_notify(IOe.what());
-			notify("disconnect");
+			if (!closedPort)
+				notify("disconnect");
 			return;
 			}
 	CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader ended",3);
 } catch (...) {
     error_notify("CodebenderccAPI::serialReader() threw an unknown exception");
-    notify("disconnect");
+    if (!closedPort)
+    	notify("disconnect");
 }
 
 std::string CodebenderccAPI::exec(const char * cmd) try {
