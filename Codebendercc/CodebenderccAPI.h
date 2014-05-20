@@ -416,12 +416,6 @@ public:
 	void debugMessage(const char * messageDebug, int minimumLevel); 
 
 	void debugMessageProbe(const char * messageDebug, int minimumLevel);
-	
-	/**
-	 * Function that print process and thread ids in Unix.
-	 **/
-	
-	void getThreadId(const char * pidMessage,const char * threadMessage); 
 
     void readSignalFile();
 	
@@ -440,17 +434,6 @@ public:
 	int currentLevel;
 	std::string usedPort;
 
-	/**
-	 * Process and thread variables in Unix.
-	 **/
-
-	#ifdef _WIN32
-		int pid;
-		long tid;
-	#else	
-		pid_t pid;
-		long tid;
-	#endif
 
 private:
 
