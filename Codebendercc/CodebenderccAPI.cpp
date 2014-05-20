@@ -939,6 +939,7 @@ void CodebenderccAPI::serialReader(const std::string &port, const unsigned int &
 	CodebenderccAPI::debugMessage("CodebenderccAPI::serialReader ended",3);
 } catch (...) {
     error_notify("CodebenderccAPI::serialReader() threw an unknown exception");
+    notify("disconnect");
 }
 
 std::string CodebenderccAPI::exec(const char * cmd) try {
